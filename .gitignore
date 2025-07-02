@@ -1,0 +1,29 @@
+# Node modules directory
+node_modules/
+
+# Vite build output directory
+dist/
+
+# Firebase cache and config files
+.firebase/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Editor-specific files
+.vscode/
+*.swp
+*.swo
+
+# Log and temp files
+*.log
+*.tmp
+
+# Environment and local config files
+.env
+*.local
+
+# CSS preprocessors (e.g. SASS/SCSS) output maps
+*.css.map
+*.scssc
