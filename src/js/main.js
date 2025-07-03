@@ -1,16 +1,26 @@
 import { ParticleSystem } from "./parsystem";
 
 window.addEventListener('load', async () => {
-    const particleImage = await loadImage('../../assets/img/particle.png');
-    const particleSystem = new ParticleSystem(particleImage);
+    const canvas = document.getElementById('bg');
+    const ctx = canvas.getContext('2d');
 
-    let lastTimestamp = null;
-    function animate(timestamp) {
-        if (!lastTimestamp) lastTimestamp = timestamp;
-        const elapsed = timestamp - lastTimestamp;
-        lastTimestamp = timestamp;
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    });
 
-        particleSystem.update(elapsed);
+    const particleImage = await loadImage('/assets/img/particle.png');
+    const particleSystem = new ParticleSystem(ctx, particleImage);
+
+    let last = performance.now();
+    function animate(now) {
+        const deltaTime = (now - last) / 1000; 
+        last = now;
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particleSystem.update(deltaTime);
         particleSystem.draw();
         requestAnimationFrame(animate);
     }
