@@ -1,41 +1,42 @@
-const parsystem = {
-    vx: { min: .5, max: .8 },
-    vy: { min: -.5, max: -.8 },
-    scale: { min: .5, max: .8 },
-    life: 5000,
-    spawn: .85,
-    texture: '../../assets/img/particle.png',
-    particles: [],
-};
+export class ParticleSystem {
+  constructor(image) {
+    this.image = image;
+    this.particles = [];
+    
+    this.vx = { min: .5, max: .8 };
+    this.vy = { min: -.5, max: -.8 };
+    this.scale = { min: .5, max: .8 };
+    this.life = 5000;
+    this.spawn = .85;
+  }
 
-function newParticle() {
-    return {
+  spawnParticle() {
+    this.particles.push({
         pos: { x: randomBetween(0, window.innerWidth), y: randomBetween(0, window.innerHeight) },
         vel: { x: randomBetween(parsystem.vx.min, parsystem.vx.max), y: randomBetween(parsystem.vy.min, parsystem.vy.max) },
         scale: randomBetween( parsystem.scale.min, parsystem.scale.max ),
         life: parsystem.life,
 
-        update() {
+        update(deltaTime) {
+          this.pos.x += this.vel.x * deltaTime;
+          this.pos.y += this.vel.y * deltaTime;
+        },
 
+        draw() {
+          ctx.drawImage(this.image, this.pos.x, this.pos.y);
         }
-    };
-}
-
-let lastTimestamp = null;
-
-export function animate(timestamp) {
-  if (!lastTimestamp) lastTimestamp = timestamp;
-  
-  const elapsed = timestamp - lastTimestamp;
-  lastTimestamp = timestamp;
-  
-  if (Math.random() >= parsystem.spawn) {
-    parsystem.particles.push(newParticle());
+    });
   }
 
-  requestAnimationFrame(animate);
-}
+  update(deltTime) {
+    if (Math.random() >= this.spawn) {
+      this.spawnParticle();
+    }
 
-function randomBetween(min, max) {
-  return Math.random() * (max - min) + min;
+    this.particles.forEach(p => p.update(deltTime))
+  }
+
+  draw(ctx) {
+    this.particles.forEach(p => p.draw())
+  }
 }
