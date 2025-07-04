@@ -1,6 +1,16 @@
 import { ParticleSystem } from "./parsystem";
 
 window.addEventListener('load', async () => {
+    document.getElementById('dark-toggle').addEventListener('click', toggleDarkMode);
+
+    setUpParticles();
+});
+
+function toggleDarkMode() {
+    document.documentElement.classList.toggle('dark');
+}
+
+function setUpParticles() {
     const canvas = document.getElementById('bg');
     const ctx = canvas.getContext('2d');
 
@@ -11,8 +21,7 @@ window.addEventListener('load', async () => {
         canvas.height = window.innerHeight;
     });
 
-    const particleImage = await loadImage('/assets/img/particle.png');
-    const particleSystem = new ParticleSystem(ctx, particleImage);
+    const particleSystem = new ParticleSystem(ctx);
 
     let last = performance.now();
     function animate(now) {
@@ -26,4 +35,6 @@ window.addEventListener('load', async () => {
     }
 
     requestAnimationFrame(animate);
-});
+}
+
+

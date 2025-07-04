@@ -1,43 +1,49 @@
 export class ParticleSystem {
-  constructor(ctx, image) {
+  constructor(ctx) {
     this.ctx = ctx;
-    this.image = image;
-
     this.particles = [];
     
-    this.vx = { min: -5, max: -8 };
-    this.vy = { min: -5, max: -8 };
-    this.scale = { min: .2, max: .4 };
-    this.rotation = { min: -1.5, max: 1.5 };
-    this.maxLife = 5;
-    this.spawn = .95;
+    this.vx = { min: -100, max: 100 };
+    this.vy = { min: -100, max: 100 };
+    this.scale = { min: .1, max: .8 };
+    this.rotation = { min: -.2, max: .2 };
+    this.maxLife = .3;
+    this.spawn = .97;
+
+    window.addEventListener('mousemove', (event) => {
+      const x = event.pageX;
+      const y = event.pageY;
+      this.spawnParticle(x, y)
+    })
   }
 
-  spawnParticle() {
+  spawnParticle(x, y) {
     this.particles.push(new Particle(
-        { x: randomBetween(0, window.innerWidth), y: randomBetween(0, window.innerHeight) },
+        // { x: randomBetween(0, window.innerWidth), y: randomBetween(0, window.innerHeight) },
+        { x: x, y: y },
         { x: randomBetween(this.vx.min, this.vx.max), y: randomBetween(this.vy.min, this.vy.max), rotation: randomBetween(this.rotation.min, this.rotation.max) },
         randomBetween(this.scale.min, this.scale.max),
-        this.maxLife
+        this.maxLife,
     ));
   }
 
   update(deltaTime) {
-    if (Math.random() >= this.spawn) {
-      this.spawnParticle();
-    }
+    // if (Math.random() >= this.spawn && this.particles.length < 8) {
+    //   this.spawnParticle();
+    // }
 
     for (let i = this.particles.length - 1; i >= 0; i--) {
       if (this.particles[i].life >= this.maxLife) {
         this.particles.splice(i, 1);
       }
-
-      this.particles[i].update(deltaTime)
+      else {
+        this.particles[i].update(deltaTime)
+      }
     }
   }
 
   draw() {
-    this.particles.forEach(p => p.draw(this.ctx, this.image))
+    this.particles.forEach(p => p.draw(this.ctx))
   }
 }
 
@@ -50,6 +56,8 @@ class Particle {
     this.life = 0
     this.alpha = 0;
     this.rotation = 0;
+    this.sides = Math.round(randomBetween(3, 6));
+    this.a = Math.random() > .5;
   }
 
   update(deltaTime) {
@@ -60,13 +68,15 @@ class Particle {
     this.life += deltaTime;
   }
 
-  draw(ctx, image) {
+  draw(ctx) {
     ctx.save();
     ctx.globalAlpha = this.alpha;
-    ctx.translate(this.pos.x, this.pos.y);
-    ctx.rotate(this.rotation);
-    ctx.scale(this.scale, this.scale);
-    ctx.drawImage(image, -image.width / 2, -image.height / 2);
+    drawPolygon(ctx, this.pos.x, this.pos.y, 8 * this.scale, this.sides, this.rotation, getCssVar('--txt-color'));
     ctx.restore();
+    // if (this.a) drawPolygon(ctx, this.pos.x, this.pos.y, 8 * this.scale - 2, this.sides, this.rotation, getCssVar('--bg-color'));
+  }
+
+  changeParticleColor(rgb) {
+
   }
 }
