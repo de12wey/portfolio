@@ -23,10 +23,10 @@
     "frontend"
   ],
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "vite build",
     "preview": "vite preview",
-    "deploy": "firebase deploy"
+    "deploy": "firebase deploy --only hosting"
   },
   "devDependencies": {
     "vite": "^7.0.0"
