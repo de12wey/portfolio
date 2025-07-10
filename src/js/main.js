@@ -14,6 +14,8 @@ window.addEventListener('load', async () => {
     moveSettingsPanel();
     initializeEvents();
     setupParticles();
+
+    navigate(document.querySelector("#mainOption"));
 });
 
 function initializeEvents() {
@@ -25,14 +27,7 @@ function initializeEvents() {
 
     /* Navigation bar menus */
     document.querySelectorAll('.navbar_option').forEach(a => {
-        a.addEventListener('click', e => {
-            e.preventDefault();
-            document.querySelectorAll('.navbar_option').forEach(a => a.classList.remove('navbar_option-selected'));
-            a.classList.add('navbar_option-selected');
-            const url = a.getAttribute('href');
-            history.pushState(null, '', url);
-            loadRoute(url);
-        })
+        a.addEventListener('click', e => { navigate(a, e) })
     });
 
     window.addEventListener('popstate', () => {
@@ -45,6 +40,15 @@ function initializeEvents() {
         currentLang = currentLang == 'en' ? 'es' : 'en';
         loadTranslations(currentLang);
     });
+}
+
+function navigate(a, e) {
+    if (e) e.preventDefault();
+    document.querySelectorAll('.navbar_option').forEach(a => a.classList.remove('navbar_option-selected'));
+    a.classList.add('navbar_option-selected');
+    const url = a.getAttribute('href');
+    history.pushState(null, '', url);
+    loadRoute(url);
 }
 
 function toggleDarkMode() {

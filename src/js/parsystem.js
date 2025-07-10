@@ -5,8 +5,8 @@ class ParticleSystem {
 		this.ctx = ctx;
 		this.particles = [];
 
-		this.vx = { min: -65, max: 65 };
-		this.vy = { min: -65, max: 65 };
+		this.vx = { min: -45, max: 45 };
+		this.vy = { min: -45, max: 45 };
 		this.scale = { min: 3, max: 4 };
 		this.rotation = { min: -.2, max: .2 };
 		this.maxLife = .3;
@@ -91,9 +91,11 @@ class Particle {
 		this.maxLife = maxLife;
 		this.life = 0
 		this.alpha = 0;
-		this.rotation = 0;
-		this.sides = Math.round(randomBetween(3, 6));
-		this.outlined = Math.random() < .5;
+		this.rotation = 90;
+		// this.sides = Math.round(randomBetween(3, 6));
+		this.sides = 4; //Math.round(randomBetween(3, 6));
+		// this.outlined = Math.random() < .5;
+		this.outlined = true;
 
 		this.color1 = getCssVar('--txt-color');
 		this.color2 = getCssVar('--bg-color');
@@ -102,8 +104,8 @@ class Particle {
 	update(deltaTime) {
 		this.pos.x += this.vel.x * deltaTime;
 		this.pos.y += this.vel.y * deltaTime;
-		this.rotation += this.vel.rotation * deltaTime;
-		this.alpha = Math.min(Math.sin((this.life * Math.PI) / this.maxLife), .7);
+		// this.rotation += this.vel.rotation * deltaTime;
+		this.alpha = Math.min(Math.sin((this.life * Math.PI) / this.maxLife), .85);
 		this.scale = Math.sin((this.life * Math.PI) / this.maxLife) * this.maxScale;
 		this.life += deltaTime;
 	}

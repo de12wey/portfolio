@@ -41,6 +41,40 @@ body {
     transition: background-color .1s ease-in;
 }
 
+.onload {
+    opacity: 0;
+    animation: loader 2s ease-in;
+    animation-delay: 2s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes loader {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+/* @keyframes loaderBar {
+    0%, 65% {
+        width: 20px;
+    }
+    100% {
+        width: 100%;
+    }
+} */
+
+/* @keyframes loaderBarText {
+    0% {
+        color: var(--txt-color);
+    }
+    100% {
+        color: var(--bg-color);
+    }
+} */
+
 #bg {
     position: fixed;
     z-index: -1;
@@ -153,7 +187,7 @@ body {
 /* About */
 .about_container {
     display: flex;
-    align-items: start;
+    align-items: center;
     justify-content: center;
     flex-direction: column;
     width: clamp(350px, 50vw, 450px); 
@@ -167,13 +201,22 @@ body {
 
 .about_name {
     font-size: clamp(36px, 5vw, 48px);
-    border-left: 1px var(--txt-color) solid;
+    /* border-left: 1px var(--txt-color) solid; */
 }
 
 .about_role {
+    display: inline-block;
+    line-height: 1em;
+    height: 1em;
+    overflow: hidden;
+    width: 20px;
+    
     font-size: clamp(18px, 2.5vw, 22px);
     background-color: var(--txt-color);
     color: var(--bg-color);
+    animation: loaderBar 1.5s ease-in 1s, loaderBarText 2.5s ease-in 1s;
+    animation-delay: 1s;
+    animation-fill-mode: forwards;
 }
 
 /* Resume */
@@ -194,7 +237,7 @@ body {
     cursor: pointer;
 }
 
-.a {
+/* .a {
     border: 0;
     padding: 0;
     margin-top: .5rem;
@@ -207,7 +250,7 @@ body {
     width: 16px;
     fill: gray;
     opacity: 1;
-}
+} */
 
 .resume_card_title {
     display: flex;
@@ -217,34 +260,26 @@ body {
     margin-bottom: .8rem;
 }
 
+.resume_card_details {
+    display: flex;
+    width: 100%;
+}
+
 .resume_card_title_role {
-    font-size: clamp(15px, 2vw, 20px);
+    font-size: clamp(15px, 2vw, 18px);
     font-weight: bold;
     text-align: center;
 }
 
 .resume_card_title_company {
-    font-size: clamp(14px, 2vw, 18px);
+    font-size: clamp(13px, 2vw, 16px);
 }
 
 .resume_card_title_date {
-    font-size: clamp(13px, 1.5vw, 16px);
+    font-size: clamp(12px, 1.5vw, 15px);
     opacity: .7;
     text-align: center;
     margin-left: auto;
-}
-
-.resume_card_title_date {
-    font-size: clamp(13px, 1.5vw, 16px);
-    opacity: .7;
-    text-align: center;
-    margin-left: auto;
-}
-
-.resume_card_details {
-    font-size: clamp(14px, 1.5vw, 18px);
-    display: flex;
-    width: 100%;
 }
 
 /* .resume_card:hover .resume_card_lines {
@@ -253,7 +288,7 @@ body {
 
 .resume_card_lines {
     overflow: hidden;
-    max-height: 0;
+    /* max-height: 0; */
     margin-top: 0.3rem;
     font-size: clamp(13px, 1.5vw, 15px);
     display: flex;
