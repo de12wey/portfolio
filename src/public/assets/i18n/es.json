@@ -1,6 +1,11 @@
 {
     "about": "SOBRE MÍ",
     "projects": "PROYECTOS",
-    "resume": "CV",
-    "about_role": "Desarrollador Backend | C# | .NET | SQL"
+    "about_role": "Desarrollador Backend C# / .NET",
+    "about_resume": "Descargar CV",
+    "about_location": "Málaga, España",
+    "projects_homepage": "Ver demo",
+    "projects_repository": "Repositorio",
+    "projects_title_1": "Portfolio personal",
+    "projects_desc_1": "Portfolio personal hecho con JavaScript vanilla. Porque no todo necesita un framework."
 }

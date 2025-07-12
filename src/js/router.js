@@ -8,7 +8,7 @@ const routes = {
 export function loadRoute(route) {
 	const file = routes[route] || routes['/'];
 
-	fetch(file)
+	return fetch(file)
 		.then(res => res.text())
 		.then(html => {
 			document.querySelector('#main_container').innerHTML = html;
@@ -16,7 +16,6 @@ export function loadRoute(route) {
 }
 
 export function updateSelectedLink(currentRoute) {
-	console.log(currentRoute);
 	document.querySelectorAll('.navbar_option').forEach(a => {
 		const href = a.getAttribute('href');
 		if (href === currentRoute) {

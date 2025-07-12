@@ -8,8 +8,7 @@ class ParticleSystem {
 		this.vx = { min: -45, max: 45 };
 		this.vy = { min: -45, max: 45 };
 		this.scale = { min: 3, max: 4 };
-		this.rotation = { min: -.2, max: .2 };
-		this.maxLife = .3;
+		this.maxLife = .5;
 
 		this.lastTime = 0;
 		this.delay = 10; 
@@ -17,7 +16,6 @@ class ParticleSystem {
 		this.lastX = null;
 		this.lastY = null;
 
-		// window.addEventListener('mousedown', (e) => this.spawnOnMovement(e));
 		window.addEventListener('mousemove', (e) => this.spawnOnMovement(e));
 		window.addEventListener('touchmove', (e) => this.spawnOnMovement(e));
 		window.addEventListener('touchstart', (e) => { this.lastX = null; this.lastY = null; });
@@ -32,21 +30,18 @@ class ParticleSystem {
 		const e = event.touches ? event.touches[0] : event;
 		const x = e.pageX;
 		const y = e.pageY;
-		// for (let i = 0; i < 2; i++) this.spawnParticle(x, y, .15);
 
 		if (this.lastX !== null && this.lastY !== null) {
 			const dx = x - this.lastX;
 			const dy = y - this.lastY;
 			const distance = Math.hypot(dx, dy);
-			const steps = Math.max(1, Math.floor(distance / 10)); // una partícula cada 5 píxeles
+			const steps = Math.max(1, Math.floor(distance / 10));
 
 			for (let i = 0; i < steps; i++) {
 				const t = i / steps;
 				const px = this.lastX + dx * t;
 				const py = this.lastY + dy * t;
-			 	/*for (let i = 0; i < 2; i++) */this.spawnParticle(px, py, .5);
-				// this.spawnParticle(px, py, .05); // función que dispara una partícula
-				// this.spawnParticle(px, py, .2); // función que dispara una partícula
+			 	this.spawnParticle(px, py);
 			}
 		}
 
@@ -54,20 +49,16 @@ class ParticleSystem {
 		this.lastY = y;
 	}
 
-	spawnParticle(x, y, maxLife, v) {
+	spawnParticle(x, y) {
 		this.particles.push(new Particle(
 			{ x: x, y: y },
-			v ?? { x: randomBetween(this.vx.min, this.vx.max), y: randomBetween(this.vy.min, this.vy.max), rotation: randomBetween(this.rotation.min, this.rotation.max) },
+			{ x: randomBetween(this.vx.min, this.vx.max), y: randomBetween(this.vy.min, this.vy.max) },
 			randomBetween(this.scale.min, this.scale.max),
-			maxLife,
+			this.maxLife,
 		));
 	}
 
 	update(deltaTime) {
-		// if (Math.random() > .97) {
-		// 	this.spawnParticle(randomBetween(0, window.innerWidth), randomBetween(0, window.innerHeight), 1.2)
-		// }
-
 		for (let i = this.particles.length - 1; i >= 0; i--) {
 			if (this.particles[i].life >= this.particles[i].maxLife) {
 				this.particles.splice(i, 1);
@@ -92,19 +83,14 @@ class Particle {
 		this.life = 0
 		this.alpha = 0;
 		this.rotation = 90;
-		// this.sides = Math.round(randomBetween(3, 6));
-		this.sides = 4; //Math.round(randomBetween(3, 6));
-		// this.outlined = Math.random() < .5;
+		this.sides = 4;
 		this.outlined = true;
-
-		this.color1 = getCssVar('--txt-color');
-		this.color2 = getCssVar('--bg-color');
+		this.color = getCssVar('--txt-color');
 	}
 
 	update(deltaTime) {
 		this.pos.x += this.vel.x * deltaTime;
 		this.pos.y += this.vel.y * deltaTime;
-		// this.rotation += this.vel.rotation * deltaTime;
 		this.alpha = Math.min(Math.sin((this.life * Math.PI) / this.maxLife), .85);
 		this.scale = Math.sin((this.life * Math.PI) / this.maxLife) * this.maxScale;
 		this.life += deltaTime;
@@ -113,11 +99,8 @@ class Particle {
 	draw(ctx) {
 		ctx.save();
 		ctx.globalAlpha = this.alpha;
-		drawPolygon(ctx, this.pos.x, this.pos.y, this.scale, this.sides, this.rotation, 
-			this.outlined ? this.color1 : this.color2,
-			this.outlined ? null : this.color1);
+		drawPolygon(ctx, this.pos.x, this.pos.y, this.scale, this.sides, this.rotation, this.color);
 		ctx.restore();
-		// if (this.outlined) drawPolygon(ctx, this.pos.x, this.pos.y, this.scale - 2, this.sides, this.rotation, getCssVar('--bg-color'));
 	}
 }
 
@@ -172,11 +155,20 @@ export function setupParticles() {
 
 	const particleSystem = new ParticleSystem(ctx);
 
-	// document.querySelectorAll('.navbar_option').forEach(a => {
-	// 	a.addEventListener('click', e => {
-	// 		for (let i = 0; i < 15; i++) particleSystem.spawnParticle(randomBetween(0, canvas.width), randomBetween(0, canvas.height), .5, { x: 0, y: randomBetween(-20, -100), rotation: .1 });
-	// 	})
-	// });
+	function resetMouseTracking() {
+		particleSystem.lastX = null;
+		particleSystem.lastY = null;
+	}
+	
+	window.addEventListener("mouseout", (event) => {
+		if (!event.relatedTarget && !event.toElement) resetMouseTracking();
+	});
+
+	window.addEventListener("contextmenu", resetMouseTracking);
+
+	document.addEventListener("visibilitychange", () => {
+		if (document.hidden) resetMouseTracking();
+	});
 
 	let last = performance.now();
 	function animate(now) {

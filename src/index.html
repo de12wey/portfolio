@@ -1,29 +1,22 @@
+<!-- Made with ❤️ in vanilla JavaScript. -->
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Personal portfolio. Made by pgr">
-    <title>PGR Portfolio</title>
-    <!-- <link rel="icon" href="/path/to/favicon.ico"> -->
+    <title>Pablo's portfolio</title>
+    <link rel="icon" href="assets/img/light.ico">
     <link rel="stylesheet" href="css/styles.css">
 </head>
-
 <body>
     <canvas id="bg"></canvas>
-
-    <div id="main_container">
-
-    </div>
-
-    <div id="navbar" class="onload">
+    <div id="main_container"></div>
+    <navbar id="navbar" class="onload">
         <div id="navbar_options">
-            <a href="/about" data-i18n="about" id = "mainOption" class="navbar_option">ABOUT</a>
-            <a href="/resume" data-i18n="resume" class="navbar_option">RESUME</a>
-            <a href="/projects" data-i18n="projects" class="navbar_option">PROJECTS</a>
+            <a href="/about" data-i18n="about" id="about" class="navbar_option">ABOUT</a>
+            <a href="/projects" data-i18n="projects" id="projects" class="navbar_option">PROJECTS</a>
         </div>
-
         <div id="navbar_buttons">
             <button id="dark-toggle" class="navbar_button">
                 <svg class="svg-ld svg-ldmode" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
@@ -39,9 +32,8 @@
                 </svg>
             </button>
         </div>
-    </div>
-
-    <div id="footer" class="onload">
+    </navbar>
+    <footer id="footer" class="onload">
         <div id="links_container">
             <a href="https://github.com/de12wey" target="_blank" rel="noopener noreferrer">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -55,12 +47,10 @@
             </a>
         </div>
         <div class="separator"></div>
-    </div>
-
+    </footer>
     <script type="module" src="js/utils.js" defer></script>
     <script type="module" src="js/router.js" defer></script>
     <script type="module" src="js/parsystem.js" defer></script>
     <script type="module" src="js/main.js" defer></script>
 </body>
-
 </html>

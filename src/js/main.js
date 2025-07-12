@@ -2,20 +2,20 @@ import { setupParticles } from "./parsystem";
 import { loadRoute, updateSelectedLink } from "./router";
 
 const BREAKPOINT = 600;
+const urlSpanishResume = 'https://drive.google.com/file/d/1BjWIPzcrnz8Pz4HbKDGYP0xity1pDos3/view?usp=drive_link';
+const urlEnglishResume = 'https://drive.google.com/file/d/1btL9AkLqxZ_biy8wUhlZoUGHTLsXr7Zh/view?usp=drive_link';
 
 let currentLang = 'en';
-const langSelector = document.getElementById('langSelector');
 
 window.addEventListener('load', async () => {
     const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
     if (isDarkMode) toggleDarkMode();
-
-    loadTranslations();
+    
     moveSettingsPanel();
     initializeEvents();
     setupParticles();
 
-    navigate(document.querySelector("#mainOption"));
+    navigate(document.querySelector("#about"));
 });
 
 function initializeEvents() {
@@ -36,7 +36,8 @@ function initializeEvents() {
         updateSelectedLink(route);
     });
 
-    langSelector.addEventListener('click', (e) => {
+    /* Language toggle */
+    document.querySelector('#langSelector').addEventListener('click', () => {
         currentLang = currentLang == 'en' ? 'es' : 'en';
         loadTranslations(currentLang);
     });
@@ -44,21 +45,35 @@ function initializeEvents() {
 
 function navigate(a, e) {
     if (e) e.preventDefault();
+
+    if (a.classList.contains('navbar_option-selected')) return;
+
     document.querySelectorAll('.navbar_option').forEach(a => a.classList.remove('navbar_option-selected'));
     a.classList.add('navbar_option-selected');
     const url = a.getAttribute('href');
     history.pushState(null, '', url);
-    loadRoute(url);
+    return loadRoute(url).then(() => loadTranslations());
 }
 
 function toggleDarkMode() {
-    document.documentElement.classList.toggle('dark');
+    const isDark = document.documentElement.classList.toggle('dark');
+    
+    /* Safari iOS fix */
+    const body = document.body;
+    body.style.display = 'none';
+    void body.offsetHeight;
+    body.style.display = '';
+    
+    let link = document.querySelector("link[rel~='icon']");
+    link.href = isDark ? 'assets/img/dark.ico' : 'assets/img/light.ico';
+
     document.querySelectorAll('.svg-ldmode').forEach(svg => {
         svg.classList.toggle('svg-hidden');
     });
 }
 
 function moveSettingsPanel() {
+    /* Fix for small screens. Move the navbar buttons to the footer */
     const panel = document.getElementById('navbar_buttons');
     const footer = document.getElementById('footer');
     const navbar = document.getElementById('navbar');
@@ -85,4 +100,14 @@ async function loadTranslations() {
             el.textContent = translations[key];
         }
     });
+
+    /* Download English or Spanish resume depending on the current language settings */
+    const resumeButton = document.querySelector('#resume_button');
+    if (resumeButton) {
+        if (currentLang === 'en') {
+            resumeButton.href = urlEnglishResume;
+        } else {
+            resumeButton.href = urlSpanishResume;
+        }
+    }
 }
