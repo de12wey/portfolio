@@ -43,7 +43,7 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## 📬 Contact
 
-Feel free to contact me:
+Feel free to reach me out:
 
 - Email: pgr.es1996@gmail.com
 - Linkedin: [Pablo García Ruiz](www.linkedin.com/in/pablo-garcia-ruiz)
