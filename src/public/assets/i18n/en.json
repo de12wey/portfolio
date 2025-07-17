@@ -7,5 +7,7 @@
     "projects_homepage": "Homepage",
     "projects_repository": "Repository",
     "projects_title_1": "Personal portfolio",
-    "projects_desc_1": "Personal portfolio made with vanilla JavaScript. Because not everything needs a framework."
+    "projects_desc_1": "Personal portfolio made with vanilla JavaScript. Because not everything needs a framework.",
+    "projects_title_2": "Igongsapal",
+    "projects_desc_2": "A minimalist version of the classic 2048 game, using Korean characters (Hangul) instead of numbers. Built with TypeScript, Vite for development/build, and Firebase for deployment."
 }
